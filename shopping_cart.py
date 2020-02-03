@@ -25,7 +25,30 @@ products = [
     {"id":20, "name": "Pomegranate Cranberry & Aloe Vera Enrich Drink", "department": "beverages", "aisle": "juice nectars", "price": 4.25}
 ] # based on data from Instacart: https://www.instacart.com/datasets/grocery-shopping-2017
 
-print(products)
+# print(products)
 # pprint(products)
 
 # TODO: write some Python code here to produce the desired output
+
+# capturing user inputs
+# input function, while loop (store as long as user does not input DONE), exit() function if user inputs DONE, store (add) in list and
+# print list
+
+shopping_list = []
+
+x = "0" #idk if this is right
+while x:
+    x = input("Please input a product identifier, or 'DONE' if there are no more items: ")
+    if (x == "DONE"): #make it so that lowercase also works; also error trap so that entering <1 and >20 is impossible (for this list)
+        break
+    else:
+        shopping_list.append(x) 
+
+#why is it adding as strings? ''
+print (shopping_list)
+
+# print identifier list + the name of item and price
+
+# receipt
+
+
