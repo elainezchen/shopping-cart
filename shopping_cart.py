@@ -36,19 +36,29 @@ products = [
 
 shopping_list = []
 
-x = "0" #idk if this is right
-while x:
-    x = input("Please input a product identifier, or 'DONE' if there are no more items: ")
-    if (x.lower() == "done"):
-        break
-    elif (int(x) < 1 or int(x) > 20):
-        print("That is not a valid item identifier.")
-    else:
-        shopping_list.append(int(x)) 
+#x = "0" #idk if this is right
+#while x:
+#    x = input("Please input a product identifier, or 'DONE' if there are no more items: ")
+#    if (x.lower() == "done"):
+#        break
+#    elif (int(x) < 1 or int(x) > 20):
+#        print("That is not a valid item identifier.")
+#    else:
+#        shopping_list.append(int(x)) 
 
-print (shopping_list)
+# tbdeleted
+shopping_list = [1, 8, 6, 16, 6]
 
 # print identifier list + the name of item and price
+print("SHOPPING CART ITEM IDENTIFIERS INCLUDE: ", shopping_list)
+
+#how to get it to add the price and name
+def search_item(any_product):
+    return any_product["name"]
+
+for item in shopping_list:
+    price_usd = " (${0:.2f})".format(item["price"])
+
 
 # receipt
 
