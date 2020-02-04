@@ -39,12 +39,13 @@ shopping_list = []
 x = "0" #idk if this is right
 while x:
     x = input("Please input a product identifier, or 'DONE' if there are no more items: ")
-    if (x == "DONE"): #make it so that lowercase also works; also error trap so that entering <1 and >20 is impossible (for this list)
+    if (x.lower() == "done"):
         break
+    elif (int(x) < 1 or int(x) > 20):
+        print("That is not a valid item identifier.")
     else:
-        shopping_list.append(x) 
+        shopping_list.append(int(x)) 
 
-#why is it adding as strings? ''
 print (shopping_list)
 
 # print identifier list + the name of item and price
