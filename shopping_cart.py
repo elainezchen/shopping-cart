@@ -44,7 +44,10 @@ shopping_list = []
 #    elif (int(x) < 1 or int(x) > 20):
 #        print("That is not a valid item identifier.")
 #    else:
-#        shopping_list.append(int(x)) 
+#        shopping_list.append(int(x))
+
+#shopping_list = [p for p in products if str(p["id"]) == str(x)]
+
 
 # tbdeleted
 shopping_list = [1, 8, 6, 16, 6]
@@ -52,12 +55,20 @@ shopping_list = [1, 8, 6, 16, 6]
 # print identifier list + the name of item and price
 print("SHOPPING CART ITEM IDENTIFIERS INCLUDE: ", shopping_list)
 
+# how to get it to add all numbers?
+for i in shopping_list:
+    matching_products = [p for p in products if str(p["id"]) == str(i)]
+    
+
+print(matching_products)
+
 #how to get it to add the price and name
 def search_item(any_product):
     return any_product["name"]
 
-for item in shopping_list:
-    price_usd = " (${0:.2f})".format(item["price"])
+#for i in shopping_list:
+    #price_usd = " (${0:.2f})".format(item["price"])
+    #print(" + " + item.search_item + item["price"])
 
 
 # receipt
