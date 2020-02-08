@@ -62,9 +62,9 @@ print("SUBTOTAL: " + str(("${0:.2f}").format(total_price)))
 
 tax = total_price*0.0875
 
-print("TAX: " + str(("${0:.2f}").format(tax)))
+print("SALES TAX (8.75%): " + str(("${0:.2f}").format(tax)))
 
 grand_total = total_price + tax
 
 print("TOTAL: " + str(("${0:.2f}").format(grand_total)))
-print("---------------------------------\nTHANKS, SEE YOU AGAIN SOON!\n---------------------------------")
+print("---------------------------------\nTHANKS, SEE YOU AGAIN!\n---------------------------------")
