@@ -2,6 +2,10 @@
 
 #from pprint import pprint
 
+import datetime
+
+d = datetime.datetime.now()
+
 products = [
     {"id":1, "name": "Chocolate Sandwich Cookies", "department": "snacks", "aisle": "cookies cakes", "price": 3.50},
     {"id":2, "name": "All-Seasons Salt", "department": "pantry", "aisle": "spices seasonings", "price": 4.99},
@@ -34,43 +38,55 @@ products = [
 # input function, while loop (store as long as user does not input DONE), exit() function if user inputs DONE, store (add) in list and
 # print list
 
+total_price = 0
 shopping_list = []
 
 #x = "0" #idk if this is right
-#while x:
-#    x = input("Please input a product identifier, or 'DONE' if there are no more items: ")
-#    if (x.lower() == "done"):
-#        break
-#    elif (int(x) < 1 or int(x) > 20):
-#        print("That is not a valid item identifier.")
-#    else:
-#        shopping_list.append(int(x))
+while True:
+    x = input("Please input a product identifier, or 'DONE' if there are no more items: ")
+    if (x.lower() == "done"):
+        break
+    elif (int(x) < 1 or int(x) > 20):
+        print("That is not a valid item identifier.")
+    else:
+        shopping_list.append(int(x))
 
 #shopping_list = [p for p in products if str(p["id"]) == str(x)]
 
+for x in shopping_list:
+    matching_products = [p for p in products if str(p["id"]) == str(x)]
+    matching_product = matching_products[0]
+    total_price = total_price + matching_product["price"]
+    print("Selected product: " + matching_product["name"] + " " + str(matching_product["price"]))
 
-# tbdeleted
-shopping_list = [1, 8, 6, 16, 6]
+print("Total price: " + str(("${0:.2f}").format(total_price)))
 
-# print identifier list + the name of item and price
-print("SHOPPING CART ITEM IDENTIFIERS INCLUDE: ", shopping_list)
-
-# how to get it to add all numbers?
-for i in shopping_list:
-    matching_products = [p for p in products if str(p["id"]) == str(i)]
-    
-
-print(matching_products)
+#print(matching_products)
 
 #how to get it to add the price and name
-def search_item(any_product):
-    return any_product["name"]
+#def search_item(any_product):
+    #return any_product["name"]
 
-#for i in shopping_list:
-    #price_usd = " (${0:.2f})".format(item["price"])
-    #print(" + " + item.search_item + item["price"])
+#for j in matching_products:
+    #price_usd = " (${0:.2f})".format(j["price"])
+    #print(" + " + j["name"] + price_usd)
 
 
 # receipt
 
-
+print("---------------------------------\nTRADER CHEN'S\nWWW.TRADER-CHEN'S-GROCERY.COM\n---------------------------------")
+print("CHECKOUT AT: " + d)
+#> ---------------------------------
+#> SELECTED PRODUCTS:
+#>  ... Chocolate Sandwich Cookies ($3.50)
+#>  ... All-Seasons Salt ($4.99)
+#>  ... Robust Golden Unsweetened Oolong Tea ($2.49)
+#>  ... All-Seasons Salt ($4.99)
+#>  ... Chocolate Sandwich Cookies ($3.50)
+#> ---------------------------------
+#> SUBTOTAL: $19.47
+#> TAX: $1.70
+#> TOTAL: $21.17
+#> ---------------------------------
+#> THANKS, SEE YOU AGAIN SOON!
+#> ---------------------------------
