@@ -41,7 +41,7 @@ while True:
     if (x.lower() == "done"):
         break
     elif (int(x) < 1 or int(x) > 20):
-        print("That is not a valid item identifier.")
+        print("Are you sure that product identifier was correct? Please try again!")
     else:
         shopping_list.append(int(x))
 
