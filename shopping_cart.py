@@ -1,10 +1,10 @@
 # shopping_cart.py
 
-#from pprint import pprint
+from pprint import pprint
+from datetime import datetime
 
-import datetime
-
-d = datetime.datetime.now()
+d = datetime.now()
+dt = d.strftime("%m/%d/%Y %H:%M")
 
 products = [
     {"id":1, "name": "Chocolate Sandwich Cookies", "department": "snacks", "aisle": "cookies cakes", "price": 3.50},
@@ -39,6 +39,7 @@ products = [
 # print list
 
 total_price = 0
+tax = 0
 shopping_list = []
 
 #x = "0" #idk if this is right
@@ -53,13 +54,7 @@ while True:
 
 #shopping_list = [p for p in products if str(p["id"]) == str(x)]
 
-for x in shopping_list:
-    matching_products = [p for p in products if str(p["id"]) == str(x)]
-    matching_product = matching_products[0]
-    total_price = total_price + matching_product["price"]
-    print("Selected product: " + matching_product["name"] + " " + str(matching_product["price"]))
 
-print("Total price: " + str(("${0:.2f}").format(total_price)))
 
 #print(matching_products)
 
@@ -73,20 +68,25 @@ print("Total price: " + str(("${0:.2f}").format(total_price)))
 
 
 # receipt
-
 print("---------------------------------\nTRADER CHEN'S\nWWW.TRADER-CHEN'S-GROCERY.COM\n---------------------------------")
-print("CHECKOUT AT: " + d)
-#> ---------------------------------
-#> SELECTED PRODUCTS:
-#>  ... Chocolate Sandwich Cookies ($3.50)
-#>  ... All-Seasons Salt ($4.99)
-#>  ... Robust Golden Unsweetened Oolong Tea ($2.49)
-#>  ... All-Seasons Salt ($4.99)
-#>  ... Chocolate Sandwich Cookies ($3.50)
-#> ---------------------------------
-#> SUBTOTAL: $19.47
-#> TAX: $1.70
-#> TOTAL: $21.17
-#> ---------------------------------
-#> THANKS, SEE YOU AGAIN SOON!
-#> ---------------------------------
+print("CHECKOUT AT: " + dt)
+print("---------------------------------\nSELECTED PRODUCTS:")
+
+for x in shopping_list:
+    matching_products = [p for p in products if str(p["id"]) == str(x)]
+    matching_product = matching_products[0]
+    total_price = total_price + matching_product["price"]
+    price_usd = " (${0:.2f})".format(matching_product["price"])
+    print(" + " + matching_product["name"] + str(price_usd))
+ 
+print("---------------------------------")
+print("SUBTOTAL: " + str(("${0:.2f}").format(total_price)))
+
+tax = total_price*0.0875
+
+print("TAX: " + str(("${0:.2f}").format(tax)))
+
+grand_total = total_price + tax
+
+print("TOTAL: " + str(("${0:.2f}").format(grand_total)))
+print("---------------------------------\nTHANKS, SEE YOU AGAIN SOON!\n---------------------------------")
