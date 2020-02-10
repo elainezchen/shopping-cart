@@ -3,6 +3,7 @@
 from pprint import pprint
 from datetime import datetime
 
+# creating a variable to establish the current date and time
 d = datetime.now()
 dt = d.strftime("%m/%d/%Y %H:%M")
 
@@ -36,20 +37,22 @@ total_price = 0
 tax = 0
 shopping_list = []
 
+# ensures the user inputs the correct product identifiers
 while True:
     x = input("Please input a product identifier, or 'DONE' if there are no more items: ")
     if (x.lower() == "done"):
         break
-    elif (int(x) < 1 or int(x) > 20):
-        print("Are you sure that product identifier was correct? Please try again!")
-    else:
+    elif ([p for p in products if str(p["id"]) == str(x)]):
         shopping_list.append(int(x))
+    else:
+        print("Are you sure that product identifier was correct? Please try again!")
 
-# receipt
+# prints receipt with a list of all products purchased and the total prices
 print("---------------------------------\nTRADER CHEN'S\nWWW.TRADER-CHEN'S-GROCERY.COM\n---------------------------------")
 print("CHECKOUT AT: " + dt)
 print("---------------------------------\nSELECTED PRODUCTS:")
 
+# locates the associated name and price of the products 
 for x in shopping_list:
     matching_products = [p for p in products if str(p["id"]) == str(x)]
     matching_product = matching_products[0]
@@ -57,14 +60,15 @@ for x in shopping_list:
     price_usd = " (${0:.2f})".format(matching_product["price"])
     print(" + " + matching_product["name"] + str(price_usd))
  
+# calculates subtotal before tax
 print("---------------------------------")
 print("SUBTOTAL: " + str(("${0:.2f}").format(total_price)))
 
+# calculates tax
 tax = total_price*0.0875
-
 print("SALES TAX (8.75%): " + str(("${0:.2f}").format(tax)))
 
+# calculates total price (including tax)
 grand_total = total_price + tax
-
 print("TOTAL: " + str(("${0:.2f}").format(grand_total)))
 print("---------------------------------\nTHANKS, SEE YOU AGAIN!\n---------------------------------")
