@@ -19,6 +19,13 @@ conda create -n shopping-env python=3.7 # (first time only)
 conda activate shopping-env
 ```
 
+Install the following modules after activating the virtual environment:
+
+```sh
+pip install python-dotenv
+pip install sendgrid==6.0.5
+```
+
 ## Usage
 
 Run the Python script using the following command-line:
