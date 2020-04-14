@@ -35,108 +35,140 @@ products = [
 ] # based on data from Instacart: https://www.instacart.com/datasets/grocery-shopping-2017
 
 
-# TODO: write some Python code here to produce the desired output
+def to_usd(my_price):
+    """
+    Converts a numeric value to usd-formatted string, for printing and display purposes.
+    Param: my_price (int or float) like 1000.2342
+    Example: to_usd(1000.2342)
+    Returns: $1,000.23
+    """
+    return "${0:,.2f}".format(my_price)
 
-total_price = 0
-tax = 0
-shopping_list = []
+def find_product(products):
+    """
+    Returns a dictionary containing products that have matching ids to the ones the user inputted.
+    Param: products (dictionary)
+    """
+    return [p for p in products if str(p["id"]) == str(x)]
 
-# ensures the user inputs the correct product identifiers
-while True:
-    x = input("Please input a product identifier, or 'DONE' if there are no more items: ")
-    if (x.lower() == "done"):
-        break
-    elif ([p for p in products if str(p["id"]) == str(x)]):
-        shopping_list.append(int(x))
-    else:
-        print("Are you sure that product identifier was correct? Please try again!")
+def find_tax(total_price):
+    """
+    Returns a float that multiplies the price with a predetermined tax rate.
+    Param: total_price (int or float) like 10.882
+    Example: find_tax(10.882)
+    Returns: 0.952175
+    """
+    return total_price*0.0875
 
-# prints receipt with a list of all products purchased and the total prices
-print("---------------------------------\nTRADER CHEN'S\nWWW.TRADER-CHEN'S-GROCERY.COM\n---------------------------------")
-print("CHECKOUT AT: " + dt)
-print("---------------------------------\nSELECTED PRODUCTS:")
+def find_total(total_price, tax):
+    """
+    Returns a float or int that finds the total price of some items including tax.
+    Param: total_price (int or float) like 10.882, tax (float) like 0.952175
+    Example: find_tax(10.882, 0.952175)
+    Returns: 11.834175
+    """
+    return total_price + tax
 
-receipt_list = []
-
-# locates the associated name and price of the products 
-for x in shopping_list:
-    matching_products = [p for p in products if str(p["id"]) == str(x)]
-    matching_product = matching_products[0]
-    total_price = total_price + matching_product["price"]
-    price_usd = " (${0:.2f})".format(matching_product["price"])
-    print(" + " + matching_product["name"] + str(price_usd))
-    receipt_list.append(matching_product["name"])
- 
-# calculates subtotal before tax
-print("---------------------------------")
-print("SUBTOTAL: " + str(("${0:.2f}").format(total_price)))
-
-# calculates tax
-tax = total_price*0.0875
-print("SALES TAX (8.75%): " + str(("${0:.2f}").format(tax)))
-
-# calculates total price (including tax)
-grand_total = total_price + tax
-print("TOTAL: " + str(("${0:.2f}").format(grand_total)))
-print("---------------------------------\nTHANKS, SEE YOU AGAIN!\n---------------------------------")
-
-# email receipt
-
-while True:
-    checkout = input("\nWould the customer like to receive the receipt by email? [Y/N] ")
-    if (checkout.lower() == "y"):
-        email = input("What is the customer's email address? ")
-
-        load_dotenv()
-
-        SENDGRID_API_KEY = os.environ.get("SENDGRID_API_KEY", "OOPS, please set env var called 'SENDGRID_API_KEY'")
-
-        client = SendGridAPIClient(SENDGRID_API_KEY) #> <class 'sendgrid.sendgrid.SendGridAPIClient>
-        print("CLIENT:", type(client))
-
-        subject = "Your Receipt from Trader Chen's Grocery"
-
-        html_subtotal=("${0:.2f}").format(total_price)
-        html_tax=("${0:.2f}").format(tax)
-        html_grand_total=("${0:.2f}").format(grand_total)
-        html_content = f"""
-        <h3>Trader Chen's Grocery</h3>
-        <strong>Hello, this is your receipt.</strong>
-        <p>Date and time of checkout: {dt} </p>
-        You ordered:
-        <ol>
-            {receipt_list}
-        </ol>
-        <p>Subtotal: {html_subtotal}</p>
-        <p>Tax: {html_tax} </p>
-        <p>Total: {html_grand_total}</p>
-        <p>Thank you for shopping at Trader Chen's! See you again!</p>
-        """
-
-        print("HTML:", html_content)
-
-        message = Mail(from_email=email, to_emails=email, subject=subject, html_content=html_content)
-
-        try:
-            response = client.send(message)
-
-            print("RESPONSE:", type(response)) #> <class 'python_http_client.client.Response'>
-            print(response.status_code) #> 202 indicates SUCCESS
-            print(response.body)
-            print(response.headers)
-
-        except Exception as e:
-            print("OOPS", e.message)
-
-        print("The receipt has been sent to the customer's email.\nThank you for shopping at Trader Chen's!\n")
-        exit()
-
-    elif(checkout.lower() == "n"):
-        print("\nThank you for shopping at Trader Chen's!\n")
-        exit()
+if __name__ == "__main__":
         
-    else:
-        print("\nPlease enter a valid input.")
+    total_price = 0
+    tax = 0
+    shopping_list = []
+
+    # ensures the user inputs the correct product identifiers
+    while True:
+        x = input("Please input a product identifier, or 'DONE' if there are no more items: ")
+        if (x.lower() == "done"):
+            break
+        elif ([p for p in products if str(p["id"]) == str(x)]):
+            shopping_list.append(int(x))
+        else:
+            print("Are you sure that product identifier was correct? Please try again!")
+
+    def print_message(message):
+        """
+        Returns a string value with a line of dashes on top.
+        Param: message (string) like "hello"
+        Example: message("hello")
+        Returns:
+        -------------------------
+        hello
+        """
+        print("-------------------------")
+        print(message)
+
+    # prints receipt with a list of all products purchased and the total prices
+    print_message("TRADER CHEN'S\nWWW.TRADER-CHEN'S-GROCERY.COM")
+    print_message("CHECKOUT AT: " + dt)
+    print_message("SELECTED PRODUCTS:")
+
+    receipt_list = []
+
+    # locates the associated name and price of the products 
+    for x in shopping_list:
+        matching_products = find_product(products)
+        matching_product = matching_products[0]
+        total_price = total_price + matching_product["price"]
+        price_usd = to_usd(matching_product["price"])
+        print(" + " + matching_product["name"] + " " + str(price_usd))
+        receipt_list.append(matching_product["name"])
+    
+    # calculates subtotal before tax
+    print_message("SUBTOTAL: " + to_usd(total_price))
+
+    # calculates tax
+    tax = find_tax(total_price)
+    print("SALES TAX (8.75%): " + to_usd(tax))
+
+    # calculates total price (including tax)
+    grand_total = find_total(total_price, tax)
+    print("TOTAL: " + to_usd(grand_total))
+    print_message("THANKS, SEE YOU AGAIN!\n-------------------------")
+
+    # email receipt
+    while True:
+        checkout = input("\nWould the customer like to receive the receipt by email? [Y/N] ")
+        if (checkout.lower() == "y"):
+            email = input("What is the customer's email address? ")
+
+            load_dotenv()
+            SENDGRID_API_KEY = os.environ.get("SENDGRID_API_KEY", "OOPS, please set env var called 'SENDGRID_API_KEY'")
+            client = SendGridAPIClient(SENDGRID_API_KEY) #> <class 'sendgrid.sendgrid.SendGridAPIClient>
+            print("CLIENT:", type(client))
+
+            subject = "Your Receipt from Trader Chen's Grocery"
+            html_content = f"""
+            <h3>Trader Chen's Grocery</h3>
+            <strong>Hello, this is your receipt.</strong>
+            <p>Date and time of checkout: {dt} </p>
+            You ordered:
+            <ol>
+                {receipt_list}
+            </ol>
+            <p>Subtotal: {to_usd(total_price)}</p>
+            <p>Tax: {to_usd(tax)} </p>
+            <p>Total: {to_usd(grand_total)}</p>
+            <p>Thank you for shopping at Trader Chen's! See you again!</p>
+            """
+
+            print("HTML:", html_content)
+            message = Mail(from_email=email, to_emails=email, subject=subject, html_content=html_content)
+
+            try:
+                response = client.send(message)
+                print(response.status_code) #> 202 indicates SUCCESS
+            except Exception as e:
+                print("OOPS", e.message)
+
+            print("The receipt has been sent to the customer's email.\nThank you for shopping at Trader Chen's!\n")
+            exit()
+
+        elif(checkout.lower() == "n"):
+            print("\nThank you for shopping at Trader Chen's!\n")
+            exit()
+            
+        else:
+            print("\nPlease enter a valid input.")
 
 
 
