@@ -44,7 +44,14 @@ def to_usd(my_price):
     """
     return "${0:,.2f}".format(my_price)
 
+def find_product(products):
+    return [p for p in products if str(p["id"]) == str(x)]
 
+def find_tax(total_price):
+    return total_price*0.0875
+
+def find_total(total_price, tax):
+    return total_price + tax
 if __name__ == "__main__":
         
     total_price = 0
@@ -61,16 +68,28 @@ if __name__ == "__main__":
         else:
             print("Are you sure that product identifier was correct? Please try again!")
 
+    def print_message(message):
+        """
+        Returns a string value with a line of dashes on top.
+        Param: message (string) like "hello"
+        Example: message("hello")
+        Returns:
+        -------------------------
+        hello
+        """
+        print("-------------------------")
+        print(message)
+
     # prints receipt with a list of all products purchased and the total prices
-    print("---------------------------------\nTRADER CHEN'S\nWWW.TRADER-CHEN'S-GROCERY.COM\n---------------------------------")
-    print("CHECKOUT AT: " + dt)
-    print("---------------------------------\nSELECTED PRODUCTS:")
+    print_message("TRADER CHEN'S\nWWW.TRADER-CHEN'S-GROCERY.COM")
+    print_message("CHECKOUT AT: " + dt)
+    print_message("SELECTED PRODUCTS:")
 
     receipt_list = []
 
     # locates the associated name and price of the products 
     for x in shopping_list:
-        matching_products = [p for p in products if str(p["id"]) == str(x)]
+        matching_products = find_product(products)
         matching_product = matching_products[0]
         total_price = total_price + matching_product["price"]
         price_usd = to_usd(matching_product["price"])
@@ -78,17 +97,16 @@ if __name__ == "__main__":
         receipt_list.append(matching_product["name"])
     
     # calculates subtotal before tax
-    print("---------------------------------")
-    print("SUBTOTAL: " + to_usd(total_price))
+    print_message("SUBTOTAL: " + to_usd(total_price))
 
     # calculates tax
-    tax = total_price*0.0875
+    tax = find_tax(total_price)
     print("SALES TAX (8.75%): " + to_usd(tax))
 
     # calculates total price (including tax)
-    grand_total = total_price + tax
+    grand_total = find_total(total_price, tax)
     print("TOTAL: " + to_usd(grand_total))
-    print("---------------------------------\nTHANKS, SEE YOU AGAIN!\n---------------------------------")
+    print_message("THANKS, SEE YOU AGAIN!\n-------------------------")
 
     # email receipt
 
@@ -106,9 +124,6 @@ if __name__ == "__main__":
 
             subject = "Your Receipt from Trader Chen's Grocery"
 
-            html_subtotal=to_usd(total_price)
-            html_tax=to_usd(tax)
-            html_grand_total=to_usd(grand_total)
             html_content = f"""
             <h3>Trader Chen's Grocery</h3>
             <strong>Hello, this is your receipt.</strong>
@@ -117,9 +132,9 @@ if __name__ == "__main__":
             <ol>
                 {receipt_list}
             </ol>
-            <p>Subtotal: {html_subtotal}</p>
-            <p>Tax: {html_tax} </p>
-            <p>Total: {html_grand_total}</p>
+            <p>Subtotal: {to_usd(total_price)}</p>
+            <p>Tax: {to_usd(tax)} </p>
+            <p>Total: {to_usd(grand_total)}</p>
             <p>Thank you for shopping at Trader Chen's! See you again!</p>
             """
 
