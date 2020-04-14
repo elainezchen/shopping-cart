@@ -1,5 +1,4 @@
-from shopping_cart import to_usd
-from shopping_cart import find_product
+from shopping_cart import to_usd, find_tax, find_total
 
 
 def test_to_usd():
@@ -10,16 +9,16 @@ def test_to_usd():
     assert to_usd(100.23) == "$100.23"
     assert to_usd(100.2) == "$100.20"
 
-def test_find_product():
+def test_find_tax():
     """
-    Tests the find_product function.
+    Tests the find_tax function.
     """
-    products = [
-        {"id":1, "name": "Chocolate Sandwich Cookies", "department": "snacks", "aisle": "cookies cakes", "price": 3.50},
-        {"id":3, "name": "Robust Golden Unsweetened Oolong Tea", "department": "beverages", "aisle": "tea", "price": 2.49},
-        {"id":2, "name": "All-Seasons Salt", "department": "pantry", "aisle": "spices seasonings", "price": 4.99},
-    ]
+    assert ("{0:,.6f}".format(find_tax(10.882))) == "0.952175"
+    assert find_tax(0) == 0
 
-    x = "0"
-    matching_products = find_product(products)
-    assert "Chocolate Sandwich Cookies" in matching_products[0]["name"]
+def test_find_total():
+    """
+    Tests the find_total function.
+    """
+    return find_total(10.882, 0.952175) == 11.834175
+    assert find_total(10.882, 0) == 10.882

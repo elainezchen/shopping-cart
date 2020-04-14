@@ -45,13 +45,30 @@ def to_usd(my_price):
     return "${0:,.2f}".format(my_price)
 
 def find_product(products):
+    """
+    Returns a dictionary containing products that have matching ids to the ones the user inputted.
+    Param: products (dictionary)
+    """
     return [p for p in products if str(p["id"]) == str(x)]
 
 def find_tax(total_price):
+    """
+    Returns a float that multiplies the price with a predetermined tax rate.
+    Param: total_price (int or float) like 10.882
+    Example: find_tax(10.882)
+    Returns: 0.952175
+    """
     return total_price*0.0875
 
 def find_total(total_price, tax):
+    """
+    Returns a float or int that finds the total price of some items including tax.
+    Param: total_price (int or float) like 10.882, tax (float) like 0.952175
+    Example: find_tax(10.882, 0.952175)
+    Returns: 11.834175
+    """
     return total_price + tax
+
 if __name__ == "__main__":
         
     total_price = 0
@@ -109,21 +126,17 @@ if __name__ == "__main__":
     print_message("THANKS, SEE YOU AGAIN!\n-------------------------")
 
     # email receipt
-
     while True:
         checkout = input("\nWould the customer like to receive the receipt by email? [Y/N] ")
         if (checkout.lower() == "y"):
             email = input("What is the customer's email address? ")
 
             load_dotenv()
-
             SENDGRID_API_KEY = os.environ.get("SENDGRID_API_KEY", "OOPS, please set env var called 'SENDGRID_API_KEY'")
-
             client = SendGridAPIClient(SENDGRID_API_KEY) #> <class 'sendgrid.sendgrid.SendGridAPIClient>
             print("CLIENT:", type(client))
 
             subject = "Your Receipt from Trader Chen's Grocery"
-
             html_content = f"""
             <h3>Trader Chen's Grocery</h3>
             <strong>Hello, this is your receipt.</strong>
@@ -139,17 +152,11 @@ if __name__ == "__main__":
             """
 
             print("HTML:", html_content)
-
             message = Mail(from_email=email, to_emails=email, subject=subject, html_content=html_content)
 
             try:
                 response = client.send(message)
-
-                print("RESPONSE:", type(response)) #> <class 'python_http_client.client.Response'>
                 print(response.status_code) #> 202 indicates SUCCESS
-                print(response.body)
-                print(response.headers)
-
             except Exception as e:
                 print("OOPS", e.message)
 
