@@ -4,5 +4,6 @@ python:
   - "3.7"
 install:
   - pip install python-dotenv
+  - pip install sendgrid==6.0.5
 script:
   - pytest
